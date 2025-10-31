@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Padaria Sabor & Tradição</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'brand-primary': '#6d4c41',
+            'brand-secondary': '#efebe9',
+            'brand-accent': '#ffc107',
+            'brand-dark': '#3f2f2a'
+          },
+          keyframes: {
+            float: { '0%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-6px)' }, '100%': { transform: 'translateY(0)' } },
+            fadeInUp: { '0%': { opacity: 0, transform: 'translateY(10px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } }
+          },
+          animation: {
+            float: 'float 6s ease-in-out infinite',
+            fadeInUp: 'fadeInUp 0.6s ease forwards'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+    :root {
+      --glass-bg: rgba(255, 255, 255, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.6);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-image: linear-gradient(180deg, #fffaf7 0%, #efebe9 60%);
+    }
+
+    /* subtle focus ring */
+    :focus {
+      outline: 3px solid rgba(255, 193, 7, 0.18);
+      outline-offset: 2px;
+    }
+
+    /* decorative diagonal overlay on hero image */
+    .diagonal-mask::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.02));
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      clip-path: polygon(0 0, 100% 8%, 100% 100%, 0 100%);
+      border-radius: 1rem;
+    }
+
+    /* tiny glass card style */
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--glass-border);
+    }
+
+    /* better image transitions */
+    img.enhanced {
+      transition: transform 0.6s cubic-bezier(.2, .9, .3, 1), filter 0.5s ease;
+    }
+
+    img.enhanced:hover {
+      transform: scale(1.05) rotate(-1deg);
+      filter: saturate(1.04) contrast(1.02);
+    }
+
+    /* smooth entrance for groups */
+    .stagger>* {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .stagger>*:nth-child(1) {
+      animation-delay: 0.06s;
+    }
+
+    .stagger>*:nth-child(2) {
+      animation-delay: 0.12s;
+    }
+
+    .stagger>*:nth-child(3) {
+      animation-delay: 0.18s;
+    }
+
+    .stagger>*:nth-child(4) {
+      animation-delay: 0.24s;
+    }
+
+    /* decorative svg wave in hero */
+    .hero-wave {
+      transform: translateY(1px);
+    }
+  </style>
+</head>
+
+<body class="text-brand-dark">
+
+  <!-- top CTA bar -->
+  <div
+    class="hidden md:flex justify-center items-center gap-4 bg-gradient-to-r from-brand-primary/95 to-brand-dark/95 text-white py-1 px-4">
+    <span class="text-sm">Promoção: Pães frescos 10% OFF nas compras até 09:00!</span>
+    <a href="#produtos"
+      class="ml-4 inline-flex items-center gap-2 bg-white/10 py-1 px-3 rounded-full text-sm hover:bg-white/20 transition">
+      Ver promos <ion-icon name="chevron-forward-outline"></ion-icon>
+    </a>
+  </div>
+
+  <header class="sticky top-0 z-50 backdrop-blur-sm bg-white/60 shadow border-b border-white/40">
+    <nav role="navigation" class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#inicio" class="flex items-center gap-3">
+        <span class="text-xl font-extrabold text-brand-dark">Sabor &amp; Tradição</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8 text-sm">
+        <a href="#inicio" class="text-slate-700 hover:text-brand-primary transition">Início</a>
+        <a href="#sobre" class="text-slate-700 hover:text-brand-primary transition">Nossos Valores</a>
+        <a href="#produtos" class="text-slate-700 hover:text-brand-primary transition">Produtos</a>
+        <a href="#contato" class="text-slate-700 hover:text-brand-primary transition">Contato</a>
+        <a href="gestao.html"
+          class="ml-4 inline-flex items-center gap-2 bg-brand-primary text-white px-4 py-2 rounded-full shadow-md hover:scale-105 transition transform">
+          <ion-icon name="apps-outline"></ion-icon>
+          Gestão
+        </a>
+      </div>
+
+      <button id="menu-button" aria-controls="mobile-menu" aria-expanded="false"
+        class="md:hidden text-3xl text-brand-primary">
+        <ion-icon name="menu-outline"></ion-icon>
+      </button>
+    </nav>
+
+    <!-- mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white/90 backdrop-blur-sm border-t border-white/40 shadow-lg">
+      <div class="px-6 py-4 flex flex-col">
+        <a href="#inicio" class="py-2 text-slate-700 rounded hover:bg-brand-secondary/50 px-3">Início</a>
+        <a href="#sobre" class="py-2 text-slate-700 rounded hover:bg-brand-secondary/50 px-3">Nossos Valores</a>
+        <a href="#produtos" class="py-2 text-slate-700 rounded hover:bg-brand-secondary/50 px-3">Produtos</a>
+        <a href="#contato" class="py-2 text-slate-700 rounded hover:bg-brand-secondary/50 px-3">Contato</a>
+        <a href="gestao.html"
+          class="mt-3 inline-block bg-brand-primary text-white text-center rounded-full py-2 px-4">Gestão (CRM)</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section id="inicio" class="relative overflow-hidden">
+      <div class="container mx-auto px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
+        <div class="z-20">
+          <h1 class="text-4xl md:text-6xl font-extrabold leading-tight text-brand-dark">
+            Produtos frescos e de qualidade <span
+              class="bg-gradient-to-r from-brand-primary/90 to-brand-dark/90 text-white px-2 rounded">todos os
+              dias</span>.
+          </h1>
+          <p class="mt-6 text-lg text-slate-600 max-w-xl">
+            Atendimento personalizado, variedade incomparável e a eficiência que você merece. Venha descobrir o sabor da
+            tradição — feito com carinho e ingredientes selecionados.
+          </p>
+
+          <div class="mt-10 flex flex-col sm:flex-row gap-4">
+            <a href="#produtos"
+              class="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-400 to-yellow-300 text-brand-dark font-bold px-6 py-3 rounded-full shadow-xl transform hover:scale-105 transition">
+              Ver Nossos Produtos
+              <ion-icon name="chevron-forward-outline"></ion-icon>
+            </a>
+
+            <a href="#contato"
+              class="inline-flex items-center gap-3 border border-slate-200 px-6 py-3 rounded-full shadow-sm hover:shadow-lg transition bg-white/80">
+              Faça sua Encomenda
+            </a>
+          </div>
+
+          <div class="mt-8 flex items-center gap-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full glass flex items-center justify-center shadow">
+                <ion-icon name="sparkles-outline" class="text-brand-dark text-xl"></ion-icon>
+              </div>
+              <div>
+                <div class="text-sm font-semibold">Produção diária</div>
+                <div class="text-xs text-slate-500">Sempre fresco</div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full glass flex items-center justify-center shadow">
+                <ion-icon name="people-outline" class="text-brand-dark text-xl"></ion-icon>
+              </div>
+              <div>
+                <div class="text-sm font-semibold">Atendimento</div>
+                <div class="text-xs text-slate-500">Personalizado</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative diagonal-mask">
+          <!-- main hero image with soft gradient overlay -->
+          <div class="rounded-2xl overflow-hidden shadow-2xl relative">
+            <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=1974&auto=format&fit=crop"
+              alt="Pães artesanais na prateleira" class="w-full h-96 md:h-[520px] object-cover enhanced">
+
+            <!-- floating croissant -->
+            <img
+              src="https://www.kingarthurbaking.com/sites/default/files/styles/featured_image/public/recipe_legacy/1915-3-large.jpg?itok=fl93d7mB"
+              alt="Croissant"
+              class="hidden lg:block w-40 h-40 object-cover rounded-xl shadow-xl border-4 border-white absolute -right-8 -bottom-8 animate-float">
+          </div>
+
+          <!-- decorative SVG wave -->
+          <svg class="hero-wave absolute -bottom-1 left-0 w-full" viewBox="0 0 1440 60"
+            xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0 0 C 360 80 1080 -40 1440 40 L1440 60 L0 60 Z" fill="white"></path>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT / VALUES -->
+    <section id="sobre" class="py-20">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-brand-dark">Por que escolher a Sabor &amp; Tradição?</h2>
+          <p class="mt-4 text-slate-600 max-w-2xl mx-auto">Unimos tradição e administração inteligente para entregar
+            qualidade, atendimento humano e agilidade — sempre com muito sabor.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 stagger">
+          <div class="glass p-8 rounded-2xl shadow transition-transform hover:-translate-y-3">
+            <div class="inline-block p-4 bg-gradient-to-br from-yellow-300 to-yellow-200 rounded-full mb-4">
+              <ion-icon name="star-outline" class="text-2xl text-brand-dark"></ion-icon>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Qualidade Superior</h3>
+            <p class="text-slate-600">Produção diária com ingredientes selecionados — feito à moda antiga, com controles
+              modernos.</p>
+          </div>
+
+          <div class="glass p-8 rounded-2xl shadow transition-transform hover:-translate-y-3">
+            <div class="inline-block p-4 bg-gradient-to-br from-yellow-300 to-yellow-200 rounded-full mb-4">
+              <ion-icon name="hand-left-outline" class="text-2xl text-brand-dark"></ion-icon>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Atendimento Humanizado</h3>
+            <p class="text-slate-600">Somos uma padaria de bairro: lembramos dos pedidos, recomendamos sabores e
+              cuidamos dos clientes.</p>
+          </div>
+
+          <div class="glass p-8 rounded-2xl shadow transition-transform hover:-translate-y-3">
+            <div class="inline-block p-4 bg-gradient-to-br from-yellow-300 to-yellow-200 rounded-full mb-4">
+              <ion-icon name="rocket-outline" class="text-2xl text-brand-dark"></ion-icon>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Rapidez & Eficiência</h3>
+            <p class="text-slate-600">Delivery ágil e encomendas pontuais — seu evento no horário e com sabor impecável.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section id="produtos" class="py-20 bg-gradient-to-b from-white to-[#fff7f1]">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-brand-dark">Nossas Delícias</h2>
+          <p class="mt-4 text-slate-600 max-w-2xl mx-auto">Do café da manhã ao evento especial — veja algumas opções que
+            preparamos para você.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- card -->
+          <article class="relative rounded-2xl overflow-hidden shadow-2xl group">
+            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=2072&auto=format&fit=crop"
+              alt="Pães variados"
+              class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="p-6 bg-gradient-to-t from-white/90 to-white/40">
+              <h3 class="text-2xl font-semibold mb-2">Pães e Bolos</h3>
+              <p class="text-slate-700">Pães franceses, bolos caseiros e salgados — sempre frescos.</p>
+            </div>
+            <div class="absolute top-4 left-4 bg-brand-primary text-white px-3 py-1 rounded-full text-sm shadow">Mais
+              vendidos</div>
+          </article>
+
+          <article class="relative rounded-2xl overflow-hidden shadow-2xl group">
+            <img src="https://lirp.cdn-website.com/33406c6e/dms3rep/multi/opt/panetones-1920w.jpg"
+              alt="Produtos sazonais"
+              class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="p-6 bg-gradient-to-t from-white/90 to-white/40">
+              <h3 class="text-2xl font-semibold mb-2">Produtos Sazonais</h3>
+              <p class="text-slate-700">Temáticos para datas especiais: Páscoa, Natal e Festas Juninas.</p>
+            </div>
+          </article>
+
+          <article class="relative rounded-2xl overflow-hidden shadow-2xl group">
+            <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1989&auto=format&fit=crop"
+              alt="Bolo de festa decorado"
+              class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="p-6 bg-gradient-to-t from-white/90 to-white/40">
+              <h3 class="text-2xl font-semibold mb-2">Encomendas Personalizadas</h3>
+              <p class="text-slate-700">Kits para festas, coffee breaks e bolos decorados.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="clientes" class="py-20">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-brand-dark">Atendendo a toda comunidade</h2>
+          <p class="mt-4 text-slate-600 max-w-2xl mx-auto">Famílias, clientes diários e empresas — confiança que vem do
+            sabor.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <blockquote class="p-8 rounded-2xl glass border border-white/30">
+            <p class="italic text-lg text-slate-800">"Não começo meu dia sem o pão fresco daqui. O atendimento é sempre
+              maravilhoso, já me conhecem pelo nome!"</p>
+            <strong class="block mt-4 text-brand-accent">- Cliente Diário</strong>
+          </blockquote>
+
+          <blockquote class="p-8 rounded-2xl glass border border-white/30">
+            <p class="italic text-lg text-slate-800">"Encomendamos os bolos de aniversário dos meus filhos aqui.
+              Qualidade e sabor que trazem confiança."</p>
+            <strong class="block mt-4 text-brand-accent">- Família</strong>
+          </blockquote>
+
+          <blockquote class="p-8 rounded-2xl glass border border-white/30">
+            <p class="italic text-lg text-slate-800">"Contratamos para o coffee break das nossas reuniões. Pontualidade
+              e produtos que impressionam."</p>
+            <strong class="block mt-4 text-brand-accent">- Empresa Local</strong>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- CRM / RELACIONAMENTO COM CLIENTE -->
+    <section id="crm" class="py-20 bg-[#fff7f1]">
+      <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-brand-dark">Programa de Benefícios & CRM</h2>
+        <p class="mt-4 text-slate-600 max-w-2xl mx-auto">
+          Cadastre-se, receba cupons exclusivos, acumule pontos e tenha recomendações personalizadas para aproveitar ao
+          máximo nossos produtos.
+        </p>
+
+        <div class="mt-12 grid md:grid-cols-4 gap-8 stagger">
+          <!-- Cartão Fidelidade -->
+          <div class="glass p-8 rounded-2xl shadow hover:-translate-y-3 transition-transform">
+            <div class="inline-block p-4 bg-gradient-to-br from-yellow-300 to-yellow-200 rounded-full mb-4">
+              <ion-icon name="ribbon-outline" class="text-2xl text-brand-dark"></ion-icon>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Cartão Fidelidade</h3>
+            <p class="text-slate-600">Acumule pontos a cada compra e troque por produtos grátis ou descontos especiais.
+            </p>
+          </div>
+
+          <!-- Newsletter -->
+          <div class="glass p-8 rounded-2xl shadow hover:-translate-y-3 transition-transform">
+            <div class="inline-block p-4 bg-gradient-to-br from-yellow-300 to-yellow-200 rounded-full mb-4">
+              <ion-icon name="mail-outline" class="text-2xl text-brand-dark"></ion-icon>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Newsletter Exclusiva</h3>
+            <p class="text-slate-600">Receba receitas, promoções e novidades fresquinhas diretamente no seu e-mail.</p>
+            <form class="mt-4 flex flex-col gap-3">
+              <input type="email" placeholder="Digite seu e-mail"
+                class="p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-yellow-400 transition">
+              <button type="submit"
+                class="bg-brand-primary text-white px-6 py-3 rounded-full shadow hover:scale-105 transition transform">Cadastrar</button>
+            </form>
+          </div>
+
+          <!-- Cupons & Promoções -->
+          <div class="glass p-8 rounded-2xl shadow hover:-translate-y-3 transition-transform">
+            <div class="inline-block p-4 bg-gradient-to-br from-yellow-300 to-yellow-200 rounded-full mb-4">
+              <ion-icon name="gift-outline" class="text-2xl text-brand-dark"></ion-icon>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Cupons & Promoções</h3>
+            <p class="text-slate-600">Receba descontos e ofertas personalizadas de acordo com suas preferências.</p>
+            <a href="#contato"
+              class="mt-4 inline-block bg-brand-accent text-white px-6 py-3 rounded-full shadow hover:scale-105 transition transform">Ver
+              Ofertas</a>
+          </div>
+
+          <!-- Sugestões & Feedback -->
+          <div class="glass p-8 rounded-2xl shadow hover:-translate-y-3 transition-transform">
+            <div class="inline-block p-4 bg-gradient-to-br from-yellow-300 to-yellow-200 rounded-full mb-4">
+              <ion-icon name="chatbubbles-outline" class="text-2xl text-brand-dark"></ion-icon>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Sugestões & Feedback</h3>
+            <p class="text-slate-600">Diga-nos como podemos melhorar. Suas opiniões ajudam a criar experiências
+              personalizadas.</p>
+            <a href="#contato"
+              class="mt-4 inline-block bg-brand-primary text-white px-6 py-3 rounded-full shadow hover:scale-105 transition transform">Enviar
+              Feedback</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contato" class="py-20 bg-white">
+      <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-brand-dark">Venha nos Visitar ou Peça Agora</h2>
+        <p class="mt-4 text-slate-600 max-w-2xl mx-auto">Estamos disponíveis em múltiplos canais para sua conveniência.
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mt-10">
+          <div class="p-8 rounded-2xl glass text-left">
+            <div class="flex items-center gap-4">
+              <div
+                class="w-14 h-14 rounded-lg bg-gradient-to-br from-brand-primary to-brand-dark flex items-center justify-center text-white shadow">
+                <ion-icon name="storefront-outline" class="text-2xl"></ion-icon>
+              </div>
+              <div>
+                <h3 class="font-semibold">Loja Física</h3>
+                <p class="text-sm text-slate-600">Araçatuba - SP</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-8 rounded-2xl glass text-left">
+            <div class="flex items-center gap-4">
+              <div
+                class="w-14 h-14 rounded-lg bg-gradient-to-br from-brand-primary to-brand-dark flex items-center justify-center text-white shadow">
+                <ion-icon name="bicycle-outline" class="text-2xl"></ion-icon>
+              </div>
+              <div>
+                <h3 class="font-semibold">Delivery Rápido</h3>
+                <p class="text-sm text-slate-600">Peça pelo app ou WhatsApp</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-8 rounded-2xl glass text-left">
+            <div class="flex items-center gap-4">
+              <div
+                class="w-14 h-14 rounded-lg bg-gradient-to-br from-brand-primary to-brand-dark flex items-center justify-center text-white shadow">
+                <ion-icon name="logo-instagram" class="text-2xl"></ion-icon>
+              </div>
+              <div>
+                <h3 class="font-semibold">Redes Sociais</h3>
+                <p class="text-sm text-slate-600">Acompanhe promoções e novidades</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- floating CTA (WhatsApp) -->
+  <a href="#" aria-label="WhatsApp"
+    class="fixed right-6 bottom-6 z-50 inline-flex items-center gap-3 bg-green-500 text-white px-4 py-3 rounded-full shadow-lg hover:scale-105 transition transform">
+    <ion-icon name="logo-whatsapp" class="text-2xl"></ion-icon>
+    <span class="hidden md:inline font-semibold">Pedir pelo WhatsApp</span>
+  </a>
+
+  <!-- FOOTER -->
+  <footer class="bg-gradient-to-t from-[#1f2937] to-[#111827] text-slate-300 py-10 mt-12">
+    <div class="container mx-auto px-6 grid md:grid-cols-3 gap-6">
+      <div>
+        <h4 class="text-white font-bold text-lg">Padaria Sabor & Tradição</h4>
+        <p class="text-sm mt-2">FATEC Araçatuba - SP | 2025<br>Guilherme Oliveira Belinelo &amp; Eric Sonego Teixeira
+        </p>
+      </div>
+
+      <div>
+        <h5 class="text-sm font-semibold text-white">Horário</h5>
+        <p class="text-sm mt-2">Seg-Sáb: 06:00 — 20:00<br>Dom: 07:00 — 13:00</p>
+      </div>
+
+      <div>
+        <h5 class="text-sm font-semibold text-white">Siga-nos</h5>
+        <div class="flex items-center gap-4 mt-3">
+          <a href="#" class="p-2 rounded bg-white/6 hover:bg-white/10"><ion-icon name="logo-instagram"></ion-icon></a>
+          <a href="#" class="p-2 rounded bg-white/6 hover:bg-white/10"><ion-icon name="logo-facebook"></ion-icon></a>
+          <a href="#" class="p-2 rounded bg-white/6 hover:bg-white/10"><ion-icon name="logo-whatsapp"></ion-icon></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 text-center text-sm text-slate-400">© 2025 Padaria Sabor & Tradição — Todos os direitos reservados
+    </div>
+  </footer>
+
+  <script>
+    const menuButton = document.getElementById('menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuButton.addEventListener('click', () => {
+      const open = !mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden');
+      menuButton.setAttribute('aria-expanded', String(!open));
+      const icon = menuButton.querySelector('ion-icon');
+      icon.setAttribute('name', open ? 'menu-outline' : 'close-outline');
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuButton.querySelector('ion-icon').setAttribute('name', 'menu-outline');
+        menuButton.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    const revealItems = document.querySelectorAll('.stagger > *');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = 1;
+          e.target.style.transform = 'translateY(0)';
+          e.target.style.animationPlayState = 'running';
+        }
+      });
+    }, { threshold: 0.12 });
+    revealItems.forEach(i => observer.observe(i));
+  </script>
+
+</body>
+
+</html>

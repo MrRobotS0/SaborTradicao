@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM - Sabor & Tradição</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-primary': '#6d4c41', // Marrom café
+                        'brand-secondary': '#efebe9', // Bege claro (fundo)
+                        'brand-accent': '#ffc107', // Amarelo (destaque)
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f7f7f7;
+        }
+
+        .tab-button.active {
+            background-color: #6d4c41;
+            color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-brand-primary flex items-center">
+                <ion-icon name="pie-chart-outline" class="mr-2"></ion-icon>
+                Dashboard Sabor & Tradição
+            </div>
+
+            <a href="index.html"
+                class="bg-brand-primary text-white font-semibold px-5 py-2 rounded-full shadow-lg hover:bg-opacity-90 transition-all transform hover:scale-105 flex items-center">
+                <ion-icon name="arrow-back-outline" class="mr-2"></ion-icon>
+                Voltar ao Site
+            </a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-6">
+
+        <div class="mb-8 p-1.5 bg-gray-200 rounded-full flex justify-center space-x-2 max-w-lg mx-auto">
+            <button
+                class="tab-button active w-full py-2.5 px-4 rounded-full font-semibold transition-colors duration-300"
+                data-tab="gerencial">
+                Gerencial
+            </button>
+            <button
+                class="tab-button w-full py-2.5 px-4 rounded-full font-semibold text-gray-600 hover:text-brand-primary transition-colors duration-300"
+                data-tab="operacional">
+                Operacional
+            </button>
+            <button
+                class="tab-button w-full py-2.5 px-4 rounded-full font-semibold text-gray-600 hover:text-brand-primary transition-colors duration-300"
+                data-tab="estrategico">
+                Estratégico
+            </button>
+        </div>
+
+        <div id="gerencial" class="tab-content space-y-8">
+            <h2 class="text-3xl font-bold text-brand-primary">Nível Gerencial</h2>
+
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card bg-white p-6 rounded-lg shadow-lg flex items-center space-x-4">
+                    <div class="p-3 bg-green-100 rounded-full"><ion-icon name="cash-outline"
+                            class="text-3xl text-green-700"></ion-icon></div>
+                    <div><span class="text-sm text-gray-500">Vendas Mensais</span>
+                        <p class="text-2xl font-bold text-brand-primary">R$ 15.420,50</p>
+                    </div>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow-lg flex items-center space-x-4">
+                    <div class="p-3 bg-blue-100 rounded-full"><ion-icon name="person-outline"
+                            class="text-3xl text-blue-700"></ion-icon></div>
+                    <div><span class="text-sm text-gray-500">Ticket Médio</span>
+                        <p class="text-2xl font-bold text-brand-primary">R$ 22,50</p>
+                    </div>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow-lg flex items-center space-x-4">
+                    <div class="p-3 bg-yellow-100 rounded-full"><ion-icon name="star-outline"
+                            class="text-3xl text-brand-accent"></ion-icon></div>
+                    <div><span class="text-sm text-gray-500">Satisfação</span>
+                        <p class="text-2xl font-bold text-brand-primary">9.2 / 10</p>
+                    </div>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow-lg flex items-center space-x-4">
+                    <div class="p-3 bg-purple-100 rounded-full"><ion-icon name="repeat-outline"
+                            class="text-3xl text-purple-700"></ion-icon></div>
+                    <div><span class="text-sm text-gray-500">Recorrência</span>
+                        <p class="text-2xl font-bold text-brand-primary">68%</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="space-y-8">
+                    <div class="card bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-brand-primary">Produtos Mais Vendidos (Mês)</h3>
+                        <ul class="space-y-4">
+                            <li class="space-y-1">
+                                <div class="flex justify-between font-medium text-gray-700 text-sm"><span>Pão
+                                        Francês</span><span>1.250 un.</span></div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-brand-primary h-2 rounded-full" style="width: 95%"></div>
+                                </div>
+                            </li>
+                            <li class="space-y-1">
+                                <div class="flex justify-between font-medium text-gray-700 text-sm"><span>Café
+                                        Expresso</span><span>830 un.</span></div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-brand-primary h-2 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </li>
+                            <li class="space-y-1">
+                                <div class="flex justify-between font-medium text-gray-700 text-sm"><span>Bolo de Fubá
+                                        (fatia)</span><span>410 un.</span></div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-brand-primary h-2 rounded-full" style="width: 50%"></div>
+                                </div>
+                            </li>
+                            <li class="space-y-1">
+                                <div class="flex justify-between font-medium text-gray-700 text-sm">
+                                    <span>Coxinha</span><span>388 un.</span></div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-brand-primary h-2 rounded-full" style="width: 45%"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-brand-primary">Movimentação Recente de Estoque</h3>
+                        <table class="w-full text-left text-sm">
+                            <thead>
+                                <tr class="border-b">
+                                    <th class="py-2 font-semibold text-gray-600">Produto</th>
+                                    <th class="py-2 font-semibold text-gray-600">Qtd.</th>
+                                    <th class="py-2 font-semibold text-gray-600">Tipo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-3 text-gray-800">Farinha de Trigo (saco)</td>
+                                    <td class="py-3 text-gray-800">+20</td>
+                                    <td><span
+                                            class="text-xs font-semibold bg-green-100 text-green-800 px-3 py-1 rounded-full">Entrada</span>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-3 text-gray-800">Ovos (dúzia)</td>
+                                    <td class="py-3 text-gray-800">+50</td>
+                                    <td><span
+                                            class="text-xs font-semibold bg-green-100 text-green-800 px-3 py-1 rounded-full">Entrada</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 text-gray-800">Leite (caixa)</td>
+                                    <td class="py-3 text-gray-800">-12</td>
+                                    <td><span
+                                            class="text-xs font-semibold bg-red-100 text-red-800 px-3 py-1 rounded-full">Saída
+                                            (Perda)</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="card bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-brand-primary">Fluxo de Caixa (Mês)</h3>
+                        <ul class="space-y-4">
+                            <li class="flex justify-between items-center">
+                                <span class="flex items-center text-gray-700"><ion-icon name="arrow-up-circle-outline"
+                                        class="text-green-500 mr-2 text-xl"></ion-icon>Entradas</span>
+                                <span class="font-bold text-green-600">R$ 28.950,00</span>
+                            </li>
+                            <li class="flex justify-between items-center">
+                                <span class="flex items-center text-gray-700"><ion-icon name="arrow-down-circle-outline"
+                                        class="text-red-500 mr-2 text-xl"></ion-icon>Saídas</span>
+                                <span class="font-bold text-red-600">- R$ 13.529,50</span>
+                            </li>
+                            <li class="flex justify-between items-center border-t-2 pt-4 mt-2 border-gray-200">
+                                <span class="font-semibold text-brand-primary text-lg">Saldo</span>
+                                <span class="font-bold text-lg text-brand-primary">R$ 15.420,50</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-brand-primary flex items-center">
+                            <ion-icon name="chatbubbles-outline" class="mr-2"></ion-icon>
+                            Feedbacks Recentes
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-center mb-1"><strong class="text-gray-800">João P.</strong><span
+                                        class="text-brand-accent ml-auto flex"><ion-icon
+                                            name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon
+                                            name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon
+                                            name="star-half"></ion-icon></span></div>
+                                <p class="text-gray-600 text-sm italic">"O pão de queijo é o melhor da cidade!
+                                    Atendimento sempre rápido."</p>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-center mb-1"><strong class="text-gray-800">Mariana
+                                        L.</strong><span class="text-brand-accent ml-auto flex"><ion-icon
+                                            name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon
+                                            name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon
+                                            name="star-outline"></ion-icon></span></div>
+                                <p class="text-gray-600 text-sm italic">"A encomenda do bolo de aniversário ficou
+                                    perfeita. Apenas um pequeno atraso na entrega."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="operacional" class="tab-content hidden space-y-8">
+            <h2 class="text-3xl font-bold text-brand-primary mb-6">Nível Operacional</h2>
+
+            <section class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <button
+                    class="card bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center"><ion-icon
+                        name="add-circle-outline" class="text-4xl text-green-600 mb-2"></ion-icon><span
+                        class="font-semibold text-brand-primary text-center">Registrar Venda</span></button>
+                <button
+                    class="card bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center"><ion-icon
+                        name="cube-outline" class="text-4xl text-blue-600 mb-2"></ion-icon><span
+                        class="font-semibold text-brand-primary text-center">Cadastrar Produto</span></button>
+                <button
+                    class="card bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center"><ion-icon
+                        name="receipt-outline" class="text-4xl text-purple-600 mb-2"></ion-icon><span
+                        class="font-semibold text-brand-primary text-center">Emitir Nota Fiscal</span></button>
+                <button
+                    class="card bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center"><ion-icon
+                        name="bicycle-outline" class="text-4xl text-red-600 mb-2"></ion-icon><span
+                        class="font-semibold text-brand-primary text-center">Controlar Delivery</span></button>
+            </section>
+
+            <section class="card bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold mb-4 text-brand-primary">Pedidos Personalizados Ativos</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-50 border-b border-gray-200">
+                            <tr>
+                                <th class="p-3 font-semibold text-gray-600">Cliente</th>
+                                <th class="p-3 font-semibold text-gray-600">Produto</th>
+                                <th class="p-3 font-semibold text-gray-600">Data Entrega</th>
+                                <th class="p-3 font-semibold text-gray-600">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="p-4 text-gray-800">Empresa Local XYZ</td>
+                                <td class="p-4 text-gray-800">Kit Coffee Break (50 pessoas)</td>
+                                <td class="p-4 text-gray-800">25/10/2025</td>
+                                <td class="p-4"><span
+                                        class="text-xs font-semibold bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">Pendente</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="p-4 text-gray-800">Maria Silva</td>
+                                <td class="p-4 text-gray-800">Bolo de Aniversário (Chocolate)</td>
+                                <td class="p-4 text-gray-800">24/10/2025</td>
+                                <td class="p-4"><span
+                                        class="text-xs font-semibold bg-green-100 text-green-800 px-3 py-1 rounded-full">Concluído</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <div id="estrategico" class="tab-content hidden space-y-8">
+            <h2 class="text-3xl font-bold text-brand-primary mb-6">Nível Estratégico</h2>
+
+            <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <div class="card bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold mb-5 text-brand-primary">Metas de Crescimento</h3>
+                    <ul class="space-y-5">
+                        <li class="flex items-start">
+                            <ion-icon name="trending-up-outline" class="text-2xl text-green-600 mr-4 mt-1"></ion-icon>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Crescimento da Base de Clientes</h4>
+                                <p class="text-gray-600 text-sm">Meta: +20% de clientes ao ano.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <ion-icon name="business-outline" class="text-2xl text-blue-600 mr-4 mt-1"></ion-icon>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Planejamento de Expansão</h4>
+                                <p class="text-gray-600 text-sm">Estudo de viabilidade para novas unidades e franquias.
+                                </p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <ion-icon name="logo-buffer" class="text-2xl text-purple-600 mr-4 mt-1"></ion-icon>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Investimentos em Tecnologia</h4>
+                                <p class="text-gray-600 text-sm">Licenciamento de sistemas ERP, CRM, BI.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold mb-5 text-brand-primary">Mercado e Posicionamento</h3>
+                    <ul class="space-y-5">
+                        <li class="flex items-start">
+                            <ion-icon name="bulb-outline" class="text-2xl text-yellow-600 mr-4 mt-1"></ion-icon>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Análise de Tendências de Mercado</h4>
+                                <p class="text-gray-600 text-sm">Investigação de novos produtos (ex: fermentação
+                                    natural).</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <ion-icon name="pricetag-outline" class="text-2xl text-teal-600 mr-4 mt-1"></ion-icon>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Políticas de Preços</h4>
+                                <p class="text-gray-600 text-sm">Decisões estratégicas para garantir preços
+                                    competitivos.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <ion-icon name="image-outline" class="text-2xl text-indigo-600 mr-4 mt-1"></ion-icon>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Marketing Estratégico</h4>
+                                <p class="text-gray-600 text-sm">Gestão da identidade visual e campanhas direcionadas.
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold mb-5 text-brand-primary">Gestão de Campanhas Sazonais</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <ion-icon name="egg-outline" class="text-2xl text-pink-500 mr-3"></ion-icon>
+                                <span class="font-medium text-gray-800">Campanha de Páscoa</span>
+                            </div>
+                            <span
+                                class="text-xs font-semibold bg-green-100 text-green-800 px-3 py-1 rounded-full">Concluída</span>
+                        </li>
+                        <li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <ion-icon name="bonfire-outline" class="text-2xl text-orange-500 mr-3"></ion-icon>
+                                <span class="font-medium text-gray-800">Campanha de Festa Junina</span>
+                            </div>
+                            <span
+                                class="text-xs font-semibold bg-green-100 text-green-800 px-3 py-1 rounded-full">Concluída</span>
+                        </li>
+                        <li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <ion-icon name="gift-outline" class="text-2xl text-red-500 mr-3"></ion-icon>
+                                <span class="font-medium text-gray-800">Campanha de Natal</span>
+                            </div>
+                            <span class="text-xs font-semibold bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Em
+                                Planejamento</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </section>
+        </div>
+
+    </main>
+
+    <footer class="text-gray-600 py-6 mt-8">
+        <div class="container mx-auto px-6 text-center text-sm">
+            <p>&copy; 2025 Padaria Sabor & Tradição. Todos os direitos reservados.</p>
+            <p>Sistemas de Informações - FATEC Araçatuba.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabName = button.getAttribute('data-tab');
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.classList.add('text-gray-600', 'hover:text-brand-primary');
+                    });
+                    button.classList.add('active');
+                    button.classList.remove('text-gray-600', 'hover:text-brand-primary');
+                    tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    const activeContent = document.getElementById(tabName);
+                    if (activeContent) {
+                        activeContent.classList.remove('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>
