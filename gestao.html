@@ -2,438 +2,1034 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM - Sabor & Tradição</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão · Sabor & Tradição</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <!-- Lucide -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'brand-primary': '#6d4c41', // Marrom café
-                        'brand-secondary': '#efebe9', // Bege claro (fundo)
-                        'brand-accent': '#ffc107', // Amarelo (destaque)
-                    }
-                }
-            }
-        }
-    </script>
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+  <!-- ApexCharts -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.2/dist/apexcharts.min.js"></script>
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            background-color: #f7f7f7;
-        }
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
 
-        .tab-button.active {
-            background-color: #6d4c41;
-            color: #ffffff;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Fraunces', 'Georgia', 'serif'],
+          },
+          colors: {
+            cream: {
+              50: '#fdfbf7',
+              100: '#faf5ec',
+              200: '#f3ead6',
+              300: '#e9dcbb',
+            },
+            clay: {
+              500: '#a87b5d',
+              600: '#8c6347',
+              700: '#6e4b34',
+              800: '#4a3324',
+              900: '#2a1d14',
+            },
+            ember: {
+              400: '#f59e44',
+              500: '#e2802b',
+              600: '#c5651a',
+            },
+          },
+        },
+      },
+    };
+  </script>
 
-        .card {
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        }
+  <style>
+    html { scroll-behavior: smooth; }
 
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-    </style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fdfbf7;
+      color: #2a1d14;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .font-display {
+      font-family: 'Fraunces', serif;
+      font-variation-settings: "opsz" 144;
+      letter-spacing: -0.02em;
+    }
+
+    /* Grain overlay */
+    .grain::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.05;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Nav glass */
+    .nav-glass {
+      background: rgba(253, 251, 247, 0.78);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      backdrop-filter: blur(14px) saturate(140%);
+    }
+
+    /* Tab pill */
+    .tab-btn {
+      transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+      position: relative;
+    }
+    .tab-btn.active {
+      background: #2a1d14;
+      color: #fdfbf7;
+    }
+    .tab-btn:not(.active):hover {
+      background: rgba(42, 29, 20, 0.05);
+    }
+
+    /* Tab content */
+    .tab-pane { display: none; }
+    .tab-pane.active {
+      display: block;
+      animation: fadeUp 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards */
+    .stat-card {
+      transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), border-color 0.3s;
+    }
+    .stat-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(42, 29, 20, 0.2);
+    }
+
+    .divider-dot::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #c5651a;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    ::selection { background: #e2802b; color: #fdfbf7; }
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #faf5ec; }
+    ::-webkit-scrollbar-thumb { background: #c5a87d; border-radius: 999px; }
+
+    /* Progress bar */
+    .progress-bar {
+      height: 4px;
+      background: rgba(42, 29, 20, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-bar > span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #6e4b34, #c5651a);
+      border-radius: 999px;
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: grow 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    }
+    @keyframes grow {
+      to { transform: scaleX(var(--p)); }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .badge-success { background: #dcf2e1; color: #1f6b3a; }
+    .badge-warn { background: #fef3c7; color: #92400e; }
+    .badge-danger { background: #fee2e2; color: #991b1b; }
+    .badge-info { background: #e0f2fe; color: #075985; }
+  </style>
 </head>
 
-<body class="antialiased">
+<body class="grain">
 
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold text-brand-primary flex items-center">
-                <ion-icon name="pie-chart-outline" class="mr-2"></ion-icon>
-                Dashboard Sabor & Tradição
+  <!-- ============ NAV ============ -->
+  <header class="fixed top-0 inset-x-0 z-50 nav-glass border-b border-clay-800/5">
+    <nav class="max-w-7xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5 group">
+        <span class="w-8 h-8 rounded-full bg-gradient-to-br from-clay-700 to-clay-900 grid place-items-center">
+          <i data-lucide="layout-dashboard" class="w-4 h-4 text-cream-50"></i>
+        </span>
+        <span class="font-display text-lg font-semibold tracking-tight">Gestão <span
+            class="text-ember-500">·</span> Sabor & Tradição</span>
+      </a>
+
+      <a href="index.html"
+        class="inline-flex items-center gap-2 text-[13px] font-medium px-4 h-9 rounded-full border border-clay-900/15 hover:border-clay-900/40 transition">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Voltar ao site
+      </a>
+    </nav>
+  </header>
+
+  <main class="relative z-10 pt-24 pb-20">
+
+    <!-- ============ HEADER ============ -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="grid lg:grid-cols-12 gap-8 lg:items-end mb-10">
+        <div class="lg:col-span-7">
+          <div class="text-xs uppercase tracking-[0.22em] text-clay-700/60 mb-4 divider-dot" data-aos="fade-up">
+            Painel administrativo
+          </div>
+          <h1 class="font-display text-4xl lg:text-6xl font-light leading-[1.02] text-clay-900" data-aos="fade-up"
+            data-aos-delay="80">
+            Visão <span class="italic">completa</span><br />do seu negócio.
+          </h1>
+        </div>
+        <div class="lg:col-span-5 lg:pb-2" data-aos="fade-up" data-aos-delay="180">
+          <p class="text-clay-800/70 leading-relaxed max-w-md">
+            Indicadores gerenciais, operacionais e estratégicos para decisões baseadas em dados — em uma
+            interface limpa e focada.
+          </p>
+        </div>
+      </div>
+
+      <!-- ============ TABS ============ -->
+      <div
+        class="inline-flex p-1.5 bg-cream-100 rounded-full border border-clay-900/5 mb-12 gap-1 max-w-full overflow-x-auto"
+        data-aos="fade-up" data-aos-delay="250">
+        <button class="tab-btn active text-sm font-medium px-5 sm:px-7 h-10 rounded-full whitespace-nowrap"
+          data-tab="gerencial">
+          <i data-lucide="bar-chart-3" class="w-4 h-4 inline -mt-0.5 mr-1.5"></i>Gerencial
+        </button>
+        <button class="tab-btn text-sm font-medium px-5 sm:px-7 h-10 rounded-full whitespace-nowrap text-clay-800/70"
+          data-tab="operacional">
+          <i data-lucide="settings-2" class="w-4 h-4 inline -mt-0.5 mr-1.5"></i>Operacional
+        </button>
+        <button class="tab-btn text-sm font-medium px-5 sm:px-7 h-10 rounded-full whitespace-nowrap text-clay-800/70"
+          data-tab="estrategico">
+          <i data-lucide="target" class="w-4 h-4 inline -mt-0.5 mr-1.5"></i>Estratégico
+        </button>
+      </div>
+
+
+      <!-- ============ GERENCIAL ============ -->
+      <div id="gerencial" class="tab-pane active space-y-8">
+
+        <!-- KPI grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="stat-card bg-cream-50 border border-clay-900/8 rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-5">
+              <span class="w-10 h-10 rounded-full bg-emerald-500/10 grid place-items-center">
+                <i data-lucide="trending-up" class="w-5 h-5 text-emerald-600"></i>
+              </span>
+              <span class="badge badge-success"><i data-lucide="arrow-up" class="w-3 h-3"></i>+12%</span>
             </div>
+            <div class="text-xs uppercase tracking-widest text-clay-700/55">Vendas mensais</div>
+            <div class="font-display text-3xl lg:text-4xl mt-1 text-clay-900 ticker">R$ <span
+                data-counter="15420">0</span></div>
+          </div>
 
-            <a href="index.html"
-                class="bg-brand-primary text-white font-semibold px-5 py-2 rounded-full shadow-lg hover:bg-opacity-90 transition-all transform hover:scale-105 flex items-center">
-                <ion-icon name="arrow-back-outline" class="mr-2"></ion-icon>
-                Voltar ao Site
-            </a>
-        </nav>
-    </header>
+          <div class="stat-card bg-cream-50 border border-clay-900/8 rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-5">
+              <span class="w-10 h-10 rounded-full bg-blue-500/10 grid place-items-center">
+                <i data-lucide="receipt" class="w-5 h-5 text-blue-600"></i>
+              </span>
+              <span class="badge badge-info"><i data-lucide="arrow-up" class="w-3 h-3"></i>+4%</span>
+            </div>
+            <div class="text-xs uppercase tracking-widest text-clay-700/55">Ticket médio</div>
+            <div class="font-display text-3xl lg:text-4xl mt-1 text-clay-900 ticker">R$ <span
+                data-counter="22">0</span>,50</div>
+          </div>
 
-    <main class="container mx-auto p-6">
+          <div class="stat-card bg-cream-50 border border-clay-900/8 rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-5">
+              <span class="w-10 h-10 rounded-full bg-ember-500/15 grid place-items-center">
+                <i data-lucide="star" class="w-5 h-5 text-ember-600"></i>
+              </span>
+              <span class="badge badge-success">Excelente</span>
+            </div>
+            <div class="text-xs uppercase tracking-widest text-clay-700/55">Satisfação</div>
+            <div class="font-display text-3xl lg:text-4xl mt-1 text-clay-900 ticker"><span
+                data-counter="9">0</span>.2<span class="text-base text-clay-700/50">/10</span></div>
+          </div>
 
-        <div class="mb-8 p-1.5 bg-gray-200 rounded-full flex justify-center space-x-2 max-w-lg mx-auto">
+          <div class="stat-card bg-clay-900 text-cream-50 rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-5">
+              <span class="w-10 h-10 rounded-full bg-cream-50/10 grid place-items-center">
+                <i data-lucide="repeat" class="w-5 h-5 text-ember-400"></i>
+              </span>
+              <span class="badge bg-cream-50/10 text-cream-50">Forte</span>
+            </div>
+            <div class="text-xs uppercase tracking-widest text-cream-50/55">Recorrência</div>
+            <div class="font-display text-3xl lg:text-4xl mt-1 ticker"><span data-counter="68">0</span>%</div>
+          </div>
+        </div>
+
+        <!-- Charts row -->
+        <div class="grid lg:grid-cols-3 gap-4">
+          <!-- Sales chart -->
+          <div class="lg:col-span-2 bg-cream-50 border border-clay-900/8 rounded-2xl p-6 lg:p-7">
+            <div class="flex items-start justify-between mb-6">
+              <div>
+                <div class="text-xs uppercase tracking-widest text-clay-700/55">Receita</div>
+                <h3 class="font-display text-2xl text-clay-900 mt-1">Últimos 30 dias</h3>
+              </div>
+              <div class="hidden sm:flex items-center gap-1 text-xs bg-cream-100 rounded-full p-1">
+                <button class="px-3 py-1 rounded-full bg-clay-900 text-cream-50 font-medium">Mês</button>
+                <button class="px-3 py-1 rounded-full text-clay-700/70 font-medium">Trimestre</button>
+              </div>
+            </div>
+            <div id="sales-chart" class="w-full"></div>
+          </div>
+
+          <!-- Cashflow donut -->
+          <div class="bg-cream-50 border border-clay-900/8 rounded-2xl p-6 lg:p-7">
+            <div class="text-xs uppercase tracking-widest text-clay-700/55">Fluxo de caixa</div>
+            <h3 class="font-display text-2xl text-clay-900 mt-1 mb-2">Outubro</h3>
+            <div id="cashflow-chart" class="w-full"></div>
+            <ul class="space-y-3 mt-2">
+              <li class="flex items-center justify-between text-sm">
+                <span class="flex items-center gap-2 text-clay-800/75">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>Entradas
+                </span>
+                <span class="font-semibold text-clay-900">R$ 28.950</span>
+              </li>
+              <li class="flex items-center justify-between text-sm">
+                <span class="flex items-center gap-2 text-clay-800/75">
+                  <span class="w-2 h-2 rounded-full bg-rose-400"></span>Saídas
+                </span>
+                <span class="font-semibold text-clay-900">R$ 13.529</span>
+              </li>
+              <li class="flex items-center justify-between border-t border-clay-900/10 pt-3 mt-2">
+                <span class="text-sm font-semibold text-clay-900">Saldo</span>
+                <span class="font-display text-xl text-ember-600">R$ 15.420</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Bottom row -->
+        <div class="grid lg:grid-cols-2 gap-4">
+          <!-- Top products -->
+          <div class="bg-cream-50 border border-clay-900/8 rounded-2xl p-6 lg:p-7">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <div class="text-xs uppercase tracking-widest text-clay-700/55">Top vendas</div>
+                <h3 class="font-display text-2xl text-clay-900 mt-1">Produtos do mês</h3>
+              </div>
+              <i data-lucide="trophy" class="w-5 h-5 text-ember-500"></i>
+            </div>
+            <ul class="space-y-5">
+              <li>
+                <div class="flex items-center justify-between text-sm mb-2">
+                  <span class="font-medium text-clay-900 flex items-center gap-2"><span
+                      class="font-display text-clay-700/40 text-sm">01</span>Pão Francês</span>
+                  <span class="text-clay-700/65 tabular-nums">1.250 un.</span>
+                </div>
+                <div class="progress-bar"><span style="--p:0.95"></span></div>
+              </li>
+              <li>
+                <div class="flex items-center justify-between text-sm mb-2">
+                  <span class="font-medium text-clay-900 flex items-center gap-2"><span
+                      class="font-display text-clay-700/40 text-sm">02</span>Café Expresso</span>
+                  <span class="text-clay-700/65 tabular-nums">830 un.</span>
+                </div>
+                <div class="progress-bar"><span style="--p:0.75"></span></div>
+              </li>
+              <li>
+                <div class="flex items-center justify-between text-sm mb-2">
+                  <span class="font-medium text-clay-900 flex items-center gap-2"><span
+                      class="font-display text-clay-700/40 text-sm">03</span>Bolo de Fubá</span>
+                  <span class="text-clay-700/65 tabular-nums">410 un.</span>
+                </div>
+                <div class="progress-bar"><span style="--p:0.5"></span></div>
+              </li>
+              <li>
+                <div class="flex items-center justify-between text-sm mb-2">
+                  <span class="font-medium text-clay-900 flex items-center gap-2"><span
+                      class="font-display text-clay-700/40 text-sm">04</span>Coxinha</span>
+                  <span class="text-clay-700/65 tabular-nums">388 un.</span>
+                </div>
+                <div class="progress-bar"><span style="--p:0.45"></span></div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Feedbacks -->
+          <div class="bg-cream-50 border border-clay-900/8 rounded-2xl p-6 lg:p-7">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <div class="text-xs uppercase tracking-widest text-clay-700/55">Voz do cliente</div>
+                <h3 class="font-display text-2xl text-clay-900 mt-1">Feedbacks recentes</h3>
+              </div>
+              <i data-lucide="message-circle-heart" class="w-5 h-5 text-ember-500"></i>
+            </div>
+            <div class="space-y-4">
+              <article class="p-5 bg-cream-100/60 rounded-xl border border-clay-900/5">
+                <header class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-full bg-clay-700 text-cream-50 grid place-items-center font-display text-sm">J</span>
+                    <strong class="text-sm text-clay-900">João P.</strong>
+                  </div>
+                  <span class="flex text-ember-500">
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                    <i data-lucide="star-half" class="w-3.5 h-3.5 fill-current"></i>
+                  </span>
+                </header>
+                <p class="text-sm text-clay-800/75 italic">"O pão de queijo é o melhor da cidade! Atendimento sempre
+                  rápido."</p>
+              </article>
+
+              <article class="p-5 bg-cream-100/60 rounded-xl border border-clay-900/5">
+                <header class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-full bg-clay-700 text-cream-50 grid place-items-center font-display text-sm">M</span>
+                    <strong class="text-sm text-clay-900">Mariana L.</strong>
+                  </div>
+                  <span class="flex text-ember-500">
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 text-clay-700/20"></i>
+                  </span>
+                </header>
+                <p class="text-sm text-clay-800/75 italic">"A encomenda do bolo de aniversário ficou perfeita.
+                  Apenas um pequeno atraso na entrega."</p>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stock movement -->
+        <div class="bg-cream-50 border border-clay-900/8 rounded-2xl p-6 lg:p-7">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <div class="text-xs uppercase tracking-widest text-clay-700/55">Estoque</div>
+              <h3 class="font-display text-2xl text-clay-900 mt-1">Movimentações recentes</h3>
+            </div>
             <button
-                class="tab-button active w-full py-2.5 px-4 rounded-full font-semibold transition-colors duration-300"
-                data-tab="gerencial">
-                Gerencial
+              class="text-xs font-medium px-4 h-9 rounded-full border border-clay-900/15 hover:border-clay-900/40 transition inline-flex items-center gap-1.5">
+              Ver tudo <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
             </button>
+          </div>
+          <div class="overflow-x-auto -mx-2">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="text-left text-xs uppercase tracking-widest text-clay-700/55 border-b border-clay-900/10">
+                  <th class="py-3 px-2 font-medium">Produto</th>
+                  <th class="py-3 px-2 font-medium">Quantidade</th>
+                  <th class="py-3 px-2 font-medium">Tipo</th>
+                  <th class="py-3 px-2 font-medium text-right">Data</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-clay-900/5">
+                <tr class="hover:bg-cream-100/50 transition">
+                  <td class="py-4 px-2 text-clay-900 font-medium">Farinha de Trigo (saco)</td>
+                  <td class="py-4 px-2 text-emerald-600 font-medium tabular-nums">+20</td>
+                  <td class="py-4 px-2"><span class="badge badge-success">Entrada</span></td>
+                  <td class="py-4 px-2 text-right text-clay-700/65">Hoje, 09:14</td>
+                </tr>
+                <tr class="hover:bg-cream-100/50 transition">
+                  <td class="py-4 px-2 text-clay-900 font-medium">Ovos (dúzia)</td>
+                  <td class="py-4 px-2 text-emerald-600 font-medium tabular-nums">+50</td>
+                  <td class="py-4 px-2"><span class="badge badge-success">Entrada</span></td>
+                  <td class="py-4 px-2 text-right text-clay-700/65">Hoje, 08:02</td>
+                </tr>
+                <tr class="hover:bg-cream-100/50 transition">
+                  <td class="py-4 px-2 text-clay-900 font-medium">Leite (caixa)</td>
+                  <td class="py-4 px-2 text-rose-500 font-medium tabular-nums">-12</td>
+                  <td class="py-4 px-2"><span class="badge badge-danger">Perda</span></td>
+                  <td class="py-4 px-2 text-right text-clay-700/65">Ontem, 17:45</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ============ OPERACIONAL ============ -->
+      <div id="operacional" class="tab-pane space-y-8">
+
+        <!-- Quick actions -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <button
+            class="stat-card group bg-cream-50 border border-clay-900/8 rounded-2xl p-6 text-left flex flex-col gap-5 min-h-[160px]">
+            <span class="w-11 h-11 rounded-full bg-emerald-500/10 grid place-items-center">
+              <i data-lucide="plus-circle" class="w-5 h-5 text-emerald-600"></i>
+            </span>
+            <div>
+              <h4 class="font-display text-xl text-clay-900">Registrar venda</h4>
+              <p class="text-xs text-clay-700/60 mt-1">Lançamento rápido no caixa</p>
+            </div>
+          </button>
+
+          <button
+            class="stat-card group bg-cream-50 border border-clay-900/8 rounded-2xl p-6 text-left flex flex-col gap-5 min-h-[160px]">
+            <span class="w-11 h-11 rounded-full bg-blue-500/10 grid place-items-center">
+              <i data-lucide="package-plus" class="w-5 h-5 text-blue-600"></i>
+            </span>
+            <div>
+              <h4 class="font-display text-xl text-clay-900">Cadastrar produto</h4>
+              <p class="text-xs text-clay-700/60 mt-1">Novo item no catálogo</p>
+            </div>
+          </button>
+
+          <button
+            class="stat-card group bg-cream-50 border border-clay-900/8 rounded-2xl p-6 text-left flex flex-col gap-5 min-h-[160px]">
+            <span class="w-11 h-11 rounded-full bg-purple-500/10 grid place-items-center">
+              <i data-lucide="file-text" class="w-5 h-5 text-purple-600"></i>
+            </span>
+            <div>
+              <h4 class="font-display text-xl text-clay-900">Emitir nota fiscal</h4>
+              <p class="text-xs text-clay-700/60 mt-1">NF-e e NFC-e</p>
+            </div>
+          </button>
+
+          <button
+            class="stat-card group bg-clay-900 text-cream-50 rounded-2xl p-6 text-left flex flex-col gap-5 min-h-[160px]">
+            <span class="w-11 h-11 rounded-full bg-cream-50/10 grid place-items-center">
+              <i data-lucide="bike" class="w-5 h-5 text-ember-400"></i>
+            </span>
+            <div>
+              <h4 class="font-display text-xl">Controlar delivery</h4>
+              <p class="text-xs text-cream-50/60 mt-1">5 entregas em andamento</p>
+            </div>
+          </button>
+        </div>
+
+        <!-- Active orders -->
+        <div class="bg-cream-50 border border-clay-900/8 rounded-2xl p-6 lg:p-7">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <div class="text-xs uppercase tracking-widest text-clay-700/55">Operação</div>
+              <h3 class="font-display text-2xl text-clay-900 mt-1">Pedidos personalizados ativos</h3>
+            </div>
             <button
-                class="tab-button w-full py-2.5 px-4 rounded-full font-semibold text-gray-600 hover:text-brand-primary transition-colors duration-300"
-                data-tab="operacional">
-                Operacional
+              class="text-xs font-medium px-4 h-9 rounded-full bg-clay-900 text-cream-50 hover:bg-clay-800 transition inline-flex items-center gap-1.5">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Novo pedido
             </button>
-            <button
-                class="tab-button w-full py-2.5 px-4 rounded-full font-semibold text-gray-600 hover:text-brand-primary transition-colors duration-300"
-                data-tab="estrategico">
-                Estratégico
-            </button>
+          </div>
+          <div class="overflow-x-auto -mx-2">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="text-left text-xs uppercase tracking-widest text-clay-700/55 border-b border-clay-900/10">
+                  <th class="py-3 px-2 font-medium">Cliente</th>
+                  <th class="py-3 px-2 font-medium">Produto</th>
+                  <th class="py-3 px-2 font-medium">Entrega</th>
+                  <th class="py-3 px-2 font-medium">Status</th>
+                  <th class="py-3 px-2 font-medium text-right"></th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-clay-900/5">
+                <tr class="hover:bg-cream-100/50 transition">
+                  <td class="py-4 px-2">
+                    <div class="flex items-center gap-3">
+                      <span
+                        class="w-8 h-8 rounded-full bg-clay-700 text-cream-50 grid place-items-center font-display text-sm">E</span>
+                      <div>
+                        <div class="font-medium text-clay-900">Empresa Local XYZ</div>
+                        <div class="text-xs text-clay-700/60">Cliente corporativo</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-4 px-2 text-clay-800/75">Kit Coffee Break (50 pessoas)</td>
+                  <td class="py-4 px-2 text-clay-800/75 tabular-nums">25/10/2025</td>
+                  <td class="py-4 px-2"><span class="badge badge-warn">Pendente</span></td>
+                  <td class="py-4 px-2 text-right">
+                    <button class="text-clay-700/50 hover:text-clay-900 transition">
+                      <i data-lucide="more-horizontal" class="w-4 h-4"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr class="hover:bg-cream-100/50 transition">
+                  <td class="py-4 px-2">
+                    <div class="flex items-center gap-3">
+                      <span
+                        class="w-8 h-8 rounded-full bg-clay-700 text-cream-50 grid place-items-center font-display text-sm">M</span>
+                      <div>
+                        <div class="font-medium text-clay-900">Maria Silva</div>
+                        <div class="text-xs text-clay-700/60">Cliente fiel</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-4 px-2 text-clay-800/75">Bolo de Aniversário (Chocolate)</td>
+                  <td class="py-4 px-2 text-clay-800/75 tabular-nums">24/10/2025</td>
+                  <td class="py-4 px-2"><span class="badge badge-success">Concluído</span></td>
+                  <td class="py-4 px-2 text-right">
+                    <button class="text-clay-700/50 hover:text-clay-900 transition">
+                      <i data-lucide="more-horizontal" class="w-4 h-4"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr class="hover:bg-cream-100/50 transition">
+                  <td class="py-4 px-2">
+                    <div class="flex items-center gap-3">
+                      <span
+                        class="w-8 h-8 rounded-full bg-clay-700 text-cream-50 grid place-items-center font-display text-sm">R</span>
+                      <div>
+                        <div class="font-medium text-clay-900">Ribeiro Família</div>
+                        <div class="text-xs text-clay-700/60">Particular</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-4 px-2 text-clay-800/75">Cesta de Café da Manhã</td>
+                  <td class="py-4 px-2 text-clay-800/75 tabular-nums">26/10/2025</td>
+                  <td class="py-4 px-2"><span class="badge badge-info">Em produção</span></td>
+                  <td class="py-4 px-2 text-right">
+                    <button class="text-clay-700/50 hover:text-clay-900 transition">
+                      <i data-lucide="more-horizontal" class="w-4 h-4"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <div id="gerencial" class="tab-content space-y-8">
-            <h2 class="text-3xl font-bold text-brand-primary">Nível Gerencial</h2>
+        <!-- Schedule -->
+        <div class="grid lg:grid-cols-2 gap-4">
+          <div class="bg-cream-50 border border-clay-900/8 rounded-2xl p-6 lg:p-7">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <div class="text-xs uppercase tracking-widest text-clay-700/55">Produção</div>
+                <h3 class="font-display text-2xl text-clay-900 mt-1">Cronograma de hoje</h3>
+              </div>
+              <i data-lucide="calendar-clock" class="w-5 h-5 text-ember-500"></i>
+            </div>
+            <ul class="space-y-4">
+              <li class="flex items-center gap-4">
+                <span class="font-display text-clay-700/50 text-sm tabular-nums w-12">04:30</span>
+                <span class="flex-1 px-4 py-3 bg-cream-100/60 rounded-xl text-sm font-medium text-clay-900">Primeira
+                  fornada — Pão Francês</span>
+                <span class="badge badge-success">OK</span>
+              </li>
+              <li class="flex items-center gap-4">
+                <span class="font-display text-clay-700/50 text-sm tabular-nums w-12">06:00</span>
+                <span class="flex-1 px-4 py-3 bg-cream-100/60 rounded-xl text-sm font-medium text-clay-900">Croissants
+                  & folhados</span>
+                <span class="badge badge-success">OK</span>
+              </li>
+              <li class="flex items-center gap-4">
+                <span class="font-display text-clay-700/50 text-sm tabular-nums w-12">09:00</span>
+                <span class="flex-1 px-4 py-3 bg-cream-100/60 rounded-xl text-sm font-medium text-clay-900">Salgados
+                  e doces</span>
+                <span class="badge badge-warn">Em andamento</span>
+              </li>
+              <li class="flex items-center gap-4">
+                <span class="font-display text-clay-700/50 text-sm tabular-nums w-12">14:00</span>
+                <span
+                  class="flex-1 px-4 py-3 bg-cream-100/60 rounded-xl text-sm font-medium text-clay-900">Pré-fermentação
+                  noturna</span>
+                <span class="badge badge-info">Agendado</span>
+              </li>
+            </ul>
+          </div>
 
-            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="card bg-white p-6 rounded-lg shadow-lg flex items-center space-x-4">
-                    <div class="p-3 bg-green-100 rounded-full"><ion-icon name="cash-outline"
-                            class="text-3xl text-green-700"></ion-icon></div>
-                    <div><span class="text-sm text-gray-500">Vendas Mensais</span>
-                        <p class="text-2xl font-bold text-brand-primary">R$ 15.420,50</p>
-                    </div>
+          <div class="bg-cream-50 border border-clay-900/8 rounded-2xl p-6 lg:p-7">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <div class="text-xs uppercase tracking-widest text-clay-700/55">Equipe</div>
+                <h3 class="font-display text-2xl text-clay-900 mt-1">Escala de hoje</h3>
+              </div>
+              <i data-lucide="users" class="w-5 h-5 text-ember-500"></i>
+            </div>
+            <ul class="space-y-3">
+              <li class="flex items-center justify-between p-4 bg-cream-100/60 rounded-xl">
+                <div class="flex items-center gap-3">
+                  <span
+                    class="w-9 h-9 rounded-full bg-clay-700 text-cream-50 grid place-items-center font-display text-sm">A</span>
+                  <div>
+                    <div class="text-sm font-medium text-clay-900">Antônio C.</div>
+                    <div class="text-xs text-clay-700/60">Mestre padeiro</div>
+                  </div>
                 </div>
-                <div class="card bg-white p-6 rounded-lg shadow-lg flex items-center space-x-4">
-                    <div class="p-3 bg-blue-100 rounded-full"><ion-icon name="person-outline"
-                            class="text-3xl text-blue-700"></ion-icon></div>
-                    <div><span class="text-sm text-gray-500">Ticket Médio</span>
-                        <p class="text-2xl font-bold text-brand-primary">R$ 22,50</p>
-                    </div>
+                <span class="text-xs text-clay-700/65 tabular-nums">04h — 12h</span>
+              </li>
+              <li class="flex items-center justify-between p-4 bg-cream-100/60 rounded-xl">
+                <div class="flex items-center gap-3">
+                  <span
+                    class="w-9 h-9 rounded-full bg-clay-700 text-cream-50 grid place-items-center font-display text-sm">B</span>
+                  <div>
+                    <div class="text-sm font-medium text-clay-900">Beatriz M.</div>
+                    <div class="text-xs text-clay-700/60">Atendimento</div>
+                  </div>
                 </div>
-                <div class="card bg-white p-6 rounded-lg shadow-lg flex items-center space-x-4">
-                    <div class="p-3 bg-yellow-100 rounded-full"><ion-icon name="star-outline"
-                            class="text-3xl text-brand-accent"></ion-icon></div>
-                    <div><span class="text-sm text-gray-500">Satisfação</span>
-                        <p class="text-2xl font-bold text-brand-primary">9.2 / 10</p>
-                    </div>
+                <span class="text-xs text-clay-700/65 tabular-nums">06h — 14h</span>
+              </li>
+              <li class="flex items-center justify-between p-4 bg-cream-100/60 rounded-xl">
+                <div class="flex items-center gap-3">
+                  <span
+                    class="w-9 h-9 rounded-full bg-clay-700 text-cream-50 grid place-items-center font-display text-sm">C</span>
+                  <div>
+                    <div class="text-sm font-medium text-clay-900">Carlos T.</div>
+                    <div class="text-xs text-clay-700/60">Delivery</div>
+                  </div>
                 </div>
-                <div class="card bg-white p-6 rounded-lg shadow-lg flex items-center space-x-4">
-                    <div class="p-3 bg-purple-100 rounded-full"><ion-icon name="repeat-outline"
-                            class="text-3xl text-purple-700"></ion-icon></div>
-                    <div><span class="text-sm text-gray-500">Recorrência</span>
-                        <p class="text-2xl font-bold text-brand-primary">68%</p>
-                    </div>
+                <span class="text-xs text-clay-700/65 tabular-nums">08h — 16h</span>
+              </li>
+              <li class="flex items-center justify-between p-4 bg-cream-100/60 rounded-xl">
+                <div class="flex items-center gap-3">
+                  <span
+                    class="w-9 h-9 rounded-full bg-clay-700 text-cream-50 grid place-items-center font-display text-sm">D</span>
+                  <div>
+                    <div class="text-sm font-medium text-clay-900">Diana R.</div>
+                    <div class="text-xs text-clay-700/60">Confeitaria</div>
+                  </div>
                 </div>
-            </section>
+                <span class="text-xs text-clay-700/65 tabular-nums">12h — 20h</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
-            <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="space-y-8">
-                    <div class="card bg-white p-6 rounded-lg shadow-lg">
-                        <h3 class="text-xl font-semibold mb-4 text-brand-primary">Produtos Mais Vendidos (Mês)</h3>
-                        <ul class="space-y-4">
-                            <li class="space-y-1">
-                                <div class="flex justify-between font-medium text-gray-700 text-sm"><span>Pão
-                                        Francês</span><span>1.250 un.</span></div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="bg-brand-primary h-2 rounded-full" style="width: 95%"></div>
-                                </div>
-                            </li>
-                            <li class="space-y-1">
-                                <div class="flex justify-between font-medium text-gray-700 text-sm"><span>Café
-                                        Expresso</span><span>830 un.</span></div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="bg-brand-primary h-2 rounded-full" style="width: 75%"></div>
-                                </div>
-                            </li>
-                            <li class="space-y-1">
-                                <div class="flex justify-between font-medium text-gray-700 text-sm"><span>Bolo de Fubá
-                                        (fatia)</span><span>410 un.</span></div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="bg-brand-primary h-2 rounded-full" style="width: 50%"></div>
-                                </div>
-                            </li>
-                            <li class="space-y-1">
-                                <div class="flex justify-between font-medium text-gray-700 text-sm">
-                                    <span>Coxinha</span><span>388 un.</span></div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="bg-brand-primary h-2 rounded-full" style="width: 45%"></div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
 
-                    <div class="card bg-white p-6 rounded-lg shadow-lg">
-                        <h3 class="text-xl font-semibold mb-4 text-brand-primary">Movimentação Recente de Estoque</h3>
-                        <table class="w-full text-left text-sm">
-                            <thead>
-                                <tr class="border-b">
-                                    <th class="py-2 font-semibold text-gray-600">Produto</th>
-                                    <th class="py-2 font-semibold text-gray-600">Qtd.</th>
-                                    <th class="py-2 font-semibold text-gray-600">Tipo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-b border-gray-100">
-                                    <td class="py-3 text-gray-800">Farinha de Trigo (saco)</td>
-                                    <td class="py-3 text-gray-800">+20</td>
-                                    <td><span
-                                            class="text-xs font-semibold bg-green-100 text-green-800 px-3 py-1 rounded-full">Entrada</span>
-                                    </td>
-                                </tr>
-                                <tr class="border-b border-gray-100">
-                                    <td class="py-3 text-gray-800">Ovos (dúzia)</td>
-                                    <td class="py-3 text-gray-800">+50</td>
-                                    <td><span
-                                            class="text-xs font-semibold bg-green-100 text-green-800 px-3 py-1 rounded-full">Entrada</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-3 text-gray-800">Leite (caixa)</td>
-                                    <td class="py-3 text-gray-800">-12</td>
-                                    <td><span
-                                            class="text-xs font-semibold bg-red-100 text-red-800 px-3 py-1 rounded-full">Saída
-                                            (Perda)</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+      <!-- ============ ESTRATEGICO ============ -->
+      <div id="estrategico" class="tab-pane space-y-8">
 
-                <div class="space-y-8">
-                    <div class="card bg-white p-6 rounded-lg shadow-lg">
-                        <h3 class="text-xl font-semibold mb-4 text-brand-primary">Fluxo de Caixa (Mês)</h3>
-                        <ul class="space-y-4">
-                            <li class="flex justify-between items-center">
-                                <span class="flex items-center text-gray-700"><ion-icon name="arrow-up-circle-outline"
-                                        class="text-green-500 mr-2 text-xl"></ion-icon>Entradas</span>
-                                <span class="font-bold text-green-600">R$ 28.950,00</span>
-                            </li>
-                            <li class="flex justify-between items-center">
-                                <span class="flex items-center text-gray-700"><ion-icon name="arrow-down-circle-outline"
-                                        class="text-red-500 mr-2 text-xl"></ion-icon>Saídas</span>
-                                <span class="font-bold text-red-600">- R$ 13.529,50</span>
-                            </li>
-                            <li class="flex justify-between items-center border-t-2 pt-4 mt-2 border-gray-200">
-                                <span class="font-semibold text-brand-primary text-lg">Saldo</span>
-                                <span class="font-bold text-lg text-brand-primary">R$ 15.420,50</span>
-                            </li>
-                        </ul>
-                    </div>
+        <!-- Hero strategy banner -->
+        <div class="relative overflow-hidden bg-clay-900 text-cream-50 rounded-3xl p-8 lg:p-12">
+          <div class="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-ember-500/20 blur-3xl"></div>
+          <div class="absolute -bottom-20 -left-12 w-72 h-72 rounded-full bg-ember-500/10 blur-3xl"></div>
 
-                    <div class="card bg-white p-6 rounded-lg shadow-lg">
-                        <h3 class="text-xl font-semibold mb-4 text-brand-primary flex items-center">
-                            <ion-icon name="chatbubbles-outline" class="mr-2"></ion-icon>
-                            Feedbacks Recentes
-                        </h3>
-                        <div class="space-y-4">
-                            <div class="p-4 bg-gray-50 rounded-lg">
-                                <div class="flex items-center mb-1"><strong class="text-gray-800">João P.</strong><span
-                                        class="text-brand-accent ml-auto flex"><ion-icon
-                                            name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon
-                                            name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon
-                                            name="star-half"></ion-icon></span></div>
-                                <p class="text-gray-600 text-sm italic">"O pão de queijo é o melhor da cidade!
-                                    Atendimento sempre rápido."</p>
-                            </div>
-                            <div class="p-4 bg-gray-50 rounded-lg">
-                                <div class="flex items-center mb-1"><strong class="text-gray-800">Mariana
-                                        L.</strong><span class="text-brand-accent ml-auto flex"><ion-icon
-                                            name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon
-                                            name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon
-                                            name="star-outline"></ion-icon></span></div>
-                                <p class="text-gray-600 text-sm italic">"A encomenda do bolo de aniversário ficou
-                                    perfeita. Apenas um pequeno atraso na entrega."</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+          <div class="relative grid lg:grid-cols-12 gap-8 items-end">
+            <div class="lg:col-span-7">
+              <div class="text-xs uppercase tracking-[0.22em] text-cream-50/55 mb-4 divider-dot">
+                Visão estratégica
+              </div>
+              <h3 class="font-display text-3xl lg:text-5xl font-light leading-tight">
+                Crescer com <span class="italic text-ember-400">consistência</span>,<br />sem perder a essência.
+              </h3>
+            </div>
+            <div class="lg:col-span-5 grid grid-cols-2 gap-4">
+              <div class="bg-cream-50/5 backdrop-blur border border-cream-50/10 rounded-2xl p-5">
+                <div class="text-xs uppercase tracking-widest text-cream-50/55">Meta anual</div>
+                <div class="font-display text-3xl mt-1 ticker">+<span data-counter="20">0</span>%</div>
+                <div class="text-xs text-cream-50/60 mt-1">novos clientes</div>
+              </div>
+              <div class="bg-cream-50/5 backdrop-blur border border-cream-50/10 rounded-2xl p-5">
+                <div class="text-xs uppercase tracking-widest text-cream-50/55">Em análise</div>
+                <div class="font-display text-3xl mt-1 ticker"><span data-counter="3">0</span></div>
+                <div class="text-xs text-cream-50/60 mt-1">novas unidades</div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div id="operacional" class="tab-content hidden space-y-8">
-            <h2 class="text-3xl font-bold text-brand-primary mb-6">Nível Operacional</h2>
-
-            <section class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <button
-                    class="card bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center"><ion-icon
-                        name="add-circle-outline" class="text-4xl text-green-600 mb-2"></ion-icon><span
-                        class="font-semibold text-brand-primary text-center">Registrar Venda</span></button>
-                <button
-                    class="card bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center"><ion-icon
-                        name="cube-outline" class="text-4xl text-blue-600 mb-2"></ion-icon><span
-                        class="font-semibold text-brand-primary text-center">Cadastrar Produto</span></button>
-                <button
-                    class="card bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center"><ion-icon
-                        name="receipt-outline" class="text-4xl text-purple-600 mb-2"></ion-icon><span
-                        class="font-semibold text-brand-primary text-center">Emitir Nota Fiscal</span></button>
-                <button
-                    class="card bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center"><ion-icon
-                        name="bicycle-outline" class="text-4xl text-red-600 mb-2"></ion-icon><span
-                        class="font-semibold text-brand-primary text-center">Controlar Delivery</span></button>
-            </section>
-
-            <section class="card bg-white p-6 rounded-lg shadow-lg">
-                <h3 class="text-xl font-semibold mb-4 text-brand-primary">Pedidos Personalizados Ativos</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-gray-50 border-b border-gray-200">
-                            <tr>
-                                <th class="p-3 font-semibold text-gray-600">Cliente</th>
-                                <th class="p-3 font-semibold text-gray-600">Produto</th>
-                                <th class="p-3 font-semibold text-gray-600">Data Entrega</th>
-                                <th class="p-3 font-semibold text-gray-600">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-b border-gray-100 hover:bg-gray-50">
-                                <td class="p-4 text-gray-800">Empresa Local XYZ</td>
-                                <td class="p-4 text-gray-800">Kit Coffee Break (50 pessoas)</td>
-                                <td class="p-4 text-gray-800">25/10/2025</td>
-                                <td class="p-4"><span
-                                        class="text-xs font-semibold bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">Pendente</span>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-100 hover:bg-gray-50">
-                                <td class="p-4 text-gray-800">Maria Silva</td>
-                                <td class="p-4 text-gray-800">Bolo de Aniversário (Chocolate)</td>
-                                <td class="p-4 text-gray-800">24/10/2025</td>
-                                <td class="p-4"><span
-                                        class="text-xs font-semibold bg-green-100 text-green-800 px-3 py-1 rounded-full">Concluído</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <!-- Three columns -->
+        <div class="grid lg:grid-cols-3 gap-4">
+          <!-- Crescimento -->
+          <div class="bg-cream-50 border border-clay-900/8 rounded-2xl p-6 lg:p-7">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <div class="text-xs uppercase tracking-widest text-clay-700/55">Crescimento</div>
+                <h3 class="font-display text-2xl text-clay-900 mt-1">Metas</h3>
+              </div>
+              <i data-lucide="trending-up" class="w-5 h-5 text-emerald-600"></i>
+            </div>
+            <ul class="space-y-5">
+              <li class="grid grid-cols-12 gap-3 items-start py-3 border-t border-clay-900/8">
+                <div class="col-span-1 font-display text-clay-700/40 text-sm">01</div>
+                <div class="col-span-11">
+                  <h4 class="text-sm font-semibold text-clay-900">Base de clientes</h4>
+                  <p class="text-xs text-clay-700/65 mt-1">+20% de clientes ao ano</p>
                 </div>
-            </section>
+              </li>
+              <li class="grid grid-cols-12 gap-3 items-start py-3 border-t border-clay-900/8">
+                <div class="col-span-1 font-display text-clay-700/40 text-sm">02</div>
+                <div class="col-span-11">
+                  <h4 class="text-sm font-semibold text-clay-900">Expansão</h4>
+                  <p class="text-xs text-clay-700/65 mt-1">Estudo de novas unidades e franquias</p>
+                </div>
+              </li>
+              <li class="grid grid-cols-12 gap-3 items-start py-3 border-t border-clay-900/8">
+                <div class="col-span-1 font-display text-clay-700/40 text-sm">03</div>
+                <div class="col-span-11">
+                  <h4 class="text-sm font-semibold text-clay-900">Tecnologia</h4>
+                  <p class="text-xs text-clay-700/65 mt-1">ERP, CRM e Business Intelligence</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Mercado -->
+          <div class="bg-cream-50 border border-clay-900/8 rounded-2xl p-6 lg:p-7">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <div class="text-xs uppercase tracking-widest text-clay-700/55">Mercado</div>
+                <h3 class="font-display text-2xl text-clay-900 mt-1">Posicionamento</h3>
+              </div>
+              <i data-lucide="compass" class="w-5 h-5 text-ember-500"></i>
+            </div>
+            <ul class="space-y-5">
+              <li class="grid grid-cols-12 gap-3 items-start py-3 border-t border-clay-900/8">
+                <div class="col-span-1 font-display text-clay-700/40 text-sm">01</div>
+                <div class="col-span-11">
+                  <h4 class="text-sm font-semibold text-clay-900">Tendências</h4>
+                  <p class="text-xs text-clay-700/65 mt-1">Fermentação natural e linha vegana</p>
+                </div>
+              </li>
+              <li class="grid grid-cols-12 gap-3 items-start py-3 border-t border-clay-900/8">
+                <div class="col-span-1 font-display text-clay-700/40 text-sm">02</div>
+                <div class="col-span-11">
+                  <h4 class="text-sm font-semibold text-clay-900">Política de preços</h4>
+                  <p class="text-xs text-clay-700/65 mt-1">Decisões para garantir competitividade</p>
+                </div>
+              </li>
+              <li class="grid grid-cols-12 gap-3 items-start py-3 border-t border-clay-900/8">
+                <div class="col-span-1 font-display text-clay-700/40 text-sm">03</div>
+                <div class="col-span-11">
+                  <h4 class="text-sm font-semibold text-clay-900">Marketing</h4>
+                  <p class="text-xs text-clay-700/65 mt-1">Identidade visual e campanhas direcionadas</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Campanhas Sazonais -->
+          <div class="bg-cream-50 border border-clay-900/8 rounded-2xl p-6 lg:p-7">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <div class="text-xs uppercase tracking-widest text-clay-700/55">Calendário</div>
+                <h3 class="font-display text-2xl text-clay-900 mt-1">Campanhas sazonais</h3>
+              </div>
+              <i data-lucide="calendar-heart" class="w-5 h-5 text-ember-500"></i>
+            </div>
+            <ul class="space-y-3">
+              <li class="flex items-center justify-between p-4 bg-cream-100/60 rounded-xl">
+                <div class="flex items-center gap-3">
+                  <span class="w-9 h-9 rounded-full bg-pink-500/15 grid place-items-center">
+                    <i data-lucide="egg" class="w-4 h-4 text-pink-600"></i>
+                  </span>
+                  <span class="text-sm font-medium text-clay-900">Páscoa</span>
+                </div>
+                <span class="badge badge-success">Concluída</span>
+              </li>
+              <li class="flex items-center justify-between p-4 bg-cream-100/60 rounded-xl">
+                <div class="flex items-center gap-3">
+                  <span class="w-9 h-9 rounded-full bg-orange-500/15 grid place-items-center">
+                    <i data-lucide="flame" class="w-4 h-4 text-orange-600"></i>
+                  </span>
+                  <span class="text-sm font-medium text-clay-900">Festa Junina</span>
+                </div>
+                <span class="badge badge-success">Concluída</span>
+              </li>
+              <li class="flex items-center justify-between p-4 bg-cream-100/60 rounded-xl">
+                <div class="flex items-center gap-3">
+                  <span class="w-9 h-9 rounded-full bg-red-500/15 grid place-items-center">
+                    <i data-lucide="gift" class="w-4 h-4 text-red-600"></i>
+                  </span>
+                  <span class="text-sm font-medium text-clay-900">Natal</span>
+                </div>
+                <span class="badge badge-info">Planejamento</span>
+              </li>
+              <li class="flex items-center justify-between p-4 bg-cream-100/60 rounded-xl">
+                <div class="flex items-center gap-3">
+                  <span class="w-9 h-9 rounded-full bg-amber-500/15 grid place-items-center">
+                    <i data-lucide="heart" class="w-4 h-4 text-amber-600"></i>
+                  </span>
+                  <span class="text-sm font-medium text-clay-900">Dia das Mães</span>
+                </div>
+                <span class="badge badge-warn">Em breve</span>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <div id="estrategico" class="tab-content hidden space-y-8">
-            <h2 class="text-3xl font-bold text-brand-primary mb-6">Nível Estratégico</h2>
-
-            <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-                <div class="card bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-semibold mb-5 text-brand-primary">Metas de Crescimento</h3>
-                    <ul class="space-y-5">
-                        <li class="flex items-start">
-                            <ion-icon name="trending-up-outline" class="text-2xl text-green-600 mr-4 mt-1"></ion-icon>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">Crescimento da Base de Clientes</h4>
-                                <p class="text-gray-600 text-sm">Meta: +20% de clientes ao ano.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <ion-icon name="business-outline" class="text-2xl text-blue-600 mr-4 mt-1"></ion-icon>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">Planejamento de Expansão</h4>
-                                <p class="text-gray-600 text-sm">Estudo de viabilidade para novas unidades e franquias.
-                                </p>
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <ion-icon name="logo-buffer" class="text-2xl text-purple-600 mr-4 mt-1"></ion-icon>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">Investimentos em Tecnologia</h4>
-                                <p class="text-gray-600 text-sm">Licenciamento de sistemas ERP, CRM, BI.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="card bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-semibold mb-5 text-brand-primary">Mercado e Posicionamento</h3>
-                    <ul class="space-y-5">
-                        <li class="flex items-start">
-                            <ion-icon name="bulb-outline" class="text-2xl text-yellow-600 mr-4 mt-1"></ion-icon>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">Análise de Tendências de Mercado</h4>
-                                <p class="text-gray-600 text-sm">Investigação de novos produtos (ex: fermentação
-                                    natural).</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <ion-icon name="pricetag-outline" class="text-2xl text-teal-600 mr-4 mt-1"></ion-icon>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">Políticas de Preços</h4>
-                                <p class="text-gray-600 text-sm">Decisões estratégicas para garantir preços
-                                    competitivos.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <ion-icon name="image-outline" class="text-2xl text-indigo-600 mr-4 mt-1"></ion-icon>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">Marketing Estratégico</h4>
-                                <p class="text-gray-600 text-sm">Gestão da identidade visual e campanhas direcionadas.
-                                </p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="card bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-semibold mb-5 text-brand-primary">Gestão de Campanhas Sazonais</h3>
-                    <ul class="space-y-4">
-                        <li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                            <div class="flex items-center">
-                                <ion-icon name="egg-outline" class="text-2xl text-pink-500 mr-3"></ion-icon>
-                                <span class="font-medium text-gray-800">Campanha de Páscoa</span>
-                            </div>
-                            <span
-                                class="text-xs font-semibold bg-green-100 text-green-800 px-3 py-1 rounded-full">Concluída</span>
-                        </li>
-                        <li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                            <div class="flex items-center">
-                                <ion-icon name="bonfire-outline" class="text-2xl text-orange-500 mr-3"></ion-icon>
-                                <span class="font-medium text-gray-800">Campanha de Festa Junina</span>
-                            </div>
-                            <span
-                                class="text-xs font-semibold bg-green-100 text-green-800 px-3 py-1 rounded-full">Concluída</span>
-                        </li>
-                        <li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                            <div class="flex items-center">
-                                <ion-icon name="gift-outline" class="text-2xl text-red-500 mr-3"></ion-icon>
-                                <span class="font-medium text-gray-800">Campanha de Natal</span>
-                            </div>
-                            <span class="text-xs font-semibold bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Em
-                                Planejamento</span>
-                        </li>
-                    </ul>
-                </div>
-
-            </section>
+        <!-- SWOT-like grid -->
+        <div class="bg-cream-50 border border-clay-900/8 rounded-2xl p-6 lg:p-7">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <div class="text-xs uppercase tracking-widest text-clay-700/55">Diagnóstico</div>
+              <h3 class="font-display text-2xl text-clay-900 mt-1">Análise SWOT</h3>
+            </div>
+            <i data-lucide="layers" class="w-5 h-5 text-ember-500"></i>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="p-5 bg-emerald-500/5 border border-emerald-500/15 rounded-xl">
+              <div class="flex items-center gap-2 text-emerald-700 text-xs uppercase tracking-widest font-semibold mb-3">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Forças
+              </div>
+              <p class="text-sm text-clay-800/80 leading-relaxed">Marca consolidada na região, qualidade reconhecida
+                pelos clientes e atendimento personalizado.</p>
+            </div>
+            <div class="p-5 bg-blue-500/5 border border-blue-500/15 rounded-xl">
+              <div class="flex items-center gap-2 text-blue-700 text-xs uppercase tracking-widest font-semibold mb-3">
+                <i data-lucide="zap" class="w-3.5 h-3.5"></i> Oportunidades
+              </div>
+              <p class="text-sm text-clay-800/80 leading-relaxed">Expansão para delivery em bairros vizinhos,
+                parcerias corporativas e linha de produtos saudáveis.</p>
+            </div>
+            <div class="p-5 bg-amber-500/5 border border-amber-500/15 rounded-xl">
+              <div class="flex items-center gap-2 text-amber-700 text-xs uppercase tracking-widest font-semibold mb-3">
+                <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Fraquezas
+              </div>
+              <p class="text-sm text-clay-800/80 leading-relaxed">Capacidade limitada de produção em datas
+                específicas e baixa presença digital comparada a concorrentes.</p>
+            </div>
+            <div class="p-5 bg-rose-500/5 border border-rose-500/15 rounded-xl">
+              <div class="flex items-center gap-2 text-rose-700 text-xs uppercase tracking-widest font-semibold mb-3">
+                <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Ameaças
+              </div>
+              <p class="text-sm text-clay-800/80 leading-relaxed">Aumento do custo de insumos e entrada de redes
+                franqueadas no mercado local.</p>
+            </div>
+          </div>
         </div>
+      </div>
 
-    </main>
+    </section>
+  </main>
 
-    <footer class="text-gray-600 py-6 mt-8">
-        <div class="container mx-auto px-6 text-center text-sm">
-            <p>&copy; 2025 Padaria Sabor & Tradição. Todos os direitos reservados.</p>
-            <p>Sistemas de Informações - FATEC Araçatuba.</p>
-        </div>
-    </footer>
+  <footer class="border-t border-clay-900/10 py-8 relative z-10">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="text-xs text-clay-700/60">© 2025 Padaria Sabor & Tradição — Todos os direitos reservados</div>
+      <div class="text-xs text-clay-700/60">Sistemas de Informações · FATEC Araçatuba</div>
+    </div>
+  </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
 
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const tabName = button.getAttribute('data-tab');
-                    tabButtons.forEach(btn => {
-                        btn.classList.remove('active');
-                        btn.classList.add('text-gray-600', 'hover:text-brand-primary');
-                    });
-                    button.classList.add('active');
-                    button.classList.remove('text-gray-600', 'hover:text-brand-primary');
-                    tabContents.forEach(content => {
-                        content.classList.add('hidden');
-                    });
-                    const activeContent = document.getElementById(tabName);
-                    if (activeContent) {
-                        activeContent.classList.remove('hidden');
-                    }
-                });
-            });
-        });
-    </script>
+  <script>
+    lucide.createIcons();
+    AOS.init({ duration: 700, easing: 'ease-out-cubic', once: true, offset: 40 });
+
+    // Tabs
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    let chartsInitialized = { gerencial: false };
+
+    function setActiveTab(name) {
+      tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+      tabBtns.forEach(b => {
+        if (b.dataset.tab !== name) b.classList.add('text-clay-800/70');
+        else b.classList.remove('text-clay-800/70');
+      });
+      tabPanes.forEach(p => p.classList.toggle('active', p.id === name));
+      // re-run counters in the pane
+      animateCountersIn(document.getElementById(name));
+    }
+
+    tabBtns.forEach(b => b.addEventListener('click', () => setActiveTab(b.dataset.tab)));
+
+    // Counters
+    function animateCountersIn(scope) {
+      if (!scope) return;
+      scope.querySelectorAll('[data-counter]').forEach(el => {
+        if (el.dataset.done) return;
+        const target = +el.dataset.counter;
+        const dur = 1400;
+        const start = performance.now();
+        const tick = (now) => {
+          const p = Math.min(1, (now - start) / dur);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(eased * target).toLocaleString('pt-BR');
+          if (p < 1) requestAnimationFrame(tick);
+          else el.dataset.done = '1';
+        };
+        requestAnimationFrame(tick);
+      });
+    }
+    animateCountersIn(document.getElementById('gerencial'));
+
+    // Charts
+    const salesData = [4200, 3800, 5100, 4600, 6200, 5800, 7100, 6900, 7400, 6800, 8200, 7900, 8600, 8100, 9200, 8800, 9700, 9300, 10100, 9800, 10800, 10400, 11200, 10900, 11800, 11500, 12400, 12100, 13000, 12700];
+    const salesOpts = {
+      chart: {
+        type: 'area',
+        height: 280,
+        toolbar: { show: false },
+        fontFamily: 'Inter, sans-serif',
+        sparkline: { enabled: false },
+        animations: { enabled: true, easing: 'easeout', speed: 800 },
+      },
+      series: [{ name: 'Receita', data: salesData }],
+      stroke: { curve: 'smooth', width: 2.5, colors: ['#c5651a'] },
+      fill: {
+        type: 'gradient',
+        gradient: { shadeIntensity: 1, opacityFrom: 0.35, opacityTo: 0, stops: [0, 100], colorStops: [{ offset: 0, color: '#e2802b', opacity: 0.4 }, { offset: 100, color: '#e2802b', opacity: 0 }] },
+      },
+      grid: { borderColor: 'rgba(42,29,20,0.06)', strokeDashArray: 4, padding: { left: 0, right: 0 } },
+      dataLabels: { enabled: false },
+      xaxis: {
+        categories: Array.from({ length: 30 }, (_, i) => i + 1),
+        labels: { style: { colors: '#6e4b34', fontSize: '11px' } },
+        axisBorder: { show: false }, axisTicks: { show: false },
+      },
+      yaxis: {
+        labels: { style: { colors: '#6e4b34', fontSize: '11px' }, formatter: (v) => 'R$' + (v / 1000).toFixed(1) + 'k' },
+      },
+      tooltip: {
+        theme: 'light',
+        x: { formatter: (v) => 'Dia ' + v },
+        y: { formatter: (v) => 'R$ ' + v.toLocaleString('pt-BR') },
+      },
+    };
+    const salesChart = new ApexCharts(document.querySelector('#sales-chart'), salesOpts);
+    salesChart.render();
+
+    const cashOpts = {
+      chart: { type: 'donut', height: 220, fontFamily: 'Inter, sans-serif', animations: { speed: 800 } },
+      series: [28950, 13529],
+      labels: ['Entradas', 'Saídas'],
+      colors: ['#10b981', '#f43f5e'],
+      stroke: { width: 0 },
+      legend: { show: false },
+      dataLabels: { enabled: false },
+      plotOptions: {
+        pie: {
+          donut: {
+            size: '78%',
+            labels: {
+              show: true,
+              name: { show: true, fontSize: '11px', color: '#6e4b34', offsetY: 16, fontFamily: 'Inter', fontWeight: 500 },
+              value: { show: true, fontSize: '28px', color: '#2a1d14', fontFamily: 'Fraunces', fontWeight: 400, offsetY: -16, formatter: (v) => 'R$' + (Number(v) / 1000).toFixed(1) + 'k' },
+              total: { show: true, label: 'Saldo', fontSize: '11px', color: '#6e4b34', fontFamily: 'Inter', fontWeight: 500, formatter: () => 'R$15,4k' },
+            },
+          },
+        },
+      },
+      tooltip: { y: { formatter: (v) => 'R$ ' + Number(v).toLocaleString('pt-BR') } },
+    };
+    const cashChart = new ApexCharts(document.querySelector('#cashflow-chart'), cashOpts);
+    cashChart.render();
+  </script>
 
 </body>
 

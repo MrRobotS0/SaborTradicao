@@ -151,16 +151,6 @@
       mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
     }
 
-    /* Image reveal */
-    .reveal-img {
-      clip-path: inset(0 0 100% 0);
-      transition: clip-path 1.2s cubic-bezier(0.76, 0, 0.24, 1);
-    }
-
-    .reveal-img.in {
-      clip-path: inset(0 0 0 0);
-    }
-
     /* Tilt card */
     .tilt {
       transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
@@ -359,7 +349,7 @@
           <div class="lg:col-span-8 relative" data-aos="fade-up">
             <div class="relative aspect-[16/10] rounded-3xl overflow-hidden bg-cream-200">
               <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=2070&auto=format&fit=crop"
-                alt="Pães artesanais" class="w-full h-full object-cover reveal-img" loading="eager">
+                alt="Pães artesanais" class="w-full h-full object-cover" loading="eager">
               <!-- floating chip -->
               <div
                 class="absolute left-5 bottom-5 sm:left-8 sm:bottom-8 flex items-center gap-3 bg-cream-50/95 backdrop-blur px-4 py-3 rounded-2xl shadow-lg shadow-clay-900/10">
@@ -379,7 +369,7 @@
             <div class="relative aspect-square lg:aspect-[4/5] rounded-3xl overflow-hidden bg-cream-200"
               data-aos="fade-up" data-aos-delay="120">
               <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1974&auto=format&fit=crop"
-                alt="Pães variados" class="w-full h-full object-cover reveal-img">
+                alt="Pães variados" class="w-full h-full object-cover">
             </div>
 
             <div
@@ -559,8 +549,8 @@
 
           <article class="product-card group cursor-pointer" data-aos="fade-up" data-aos-delay="120">
             <div class="relative aspect-[4/5] rounded-3xl overflow-hidden bg-cream-200">
-              <img src="https://lirp.cdn-website.com/33406c6e/dms3rep/multi/opt/panetones-1920w.jpg" alt="Sazonais"
-                class="product-img w-full h-full object-cover">
+              <img src="https://images.unsplash.com/photo-1607920591413-4ec007e70023?q=80&w=2070&auto=format&fit=crop"
+                alt="Sazonais" class="product-img w-full h-full object-cover">
               <span
                 class="product-tag absolute top-5 left-5 bg-ember-500 text-cream-50 text-[11px] uppercase tracking-widest px-3 py-1.5 rounded-full">Temporada</span>
               <div
@@ -953,17 +943,6 @@
       mobileMenu.classList.toggle('hidden');
     });
     mobileMenu?.querySelectorAll('a').forEach(l => l.addEventListener('click', () => mobileMenu.classList.add('hidden')));
-
-    // Reveal images (clip-path)
-    const imgObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in');
-          imgObserver.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.15 });
-    document.querySelectorAll('.reveal-img').forEach(i => imgObserver.observe(i));
 
     // Counter
     const counters = document.querySelectorAll('[data-counter]');
